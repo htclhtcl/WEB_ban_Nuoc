@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiệm Trà Sinh Viên - Xuân Quang</title>
+    <style>
+        :root {
+            --primary: #ffd600; /* Vàng trà chanh */
+            --secondary: #00b894; /* Xanh trà trái cây */
+            --dark: #2d3436;
+            --light: #f9f9f9;
+        }
+
+        body { 
+            font-family: 'Lexend', 'Segoe UI', sans-serif; 
+            background-color: var(--light); 
+            margin: 0; 
+            color: var(--dark);
+            scroll-behavior: smooth;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 800;
+            color: var(--secondary);
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            margin-left: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        /* --- BANNER --- */
+        .hero {
+            background: var(--primary);
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+        .hero h1 { margin: 0; font-size: 2em; color: #000; }
+
+        /* --- MENU SECTION --- */
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        
+        .section-title {
+            border-left: 5px solid var(--secondary);
+            padding-left: 15px;
+            margin: 40px 0 20px;
+            font-size: 1.5em;
+        }
+
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            gap: 20px; 
+        }
+        
+        .item-card { 
+            background: white; 
+            border-radius: 20px;
+            overflow: hidden; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .item-card:hover { transform: translateY(-5px); }
+
+        .item-card img { width: 100%; height: 200px; object-fit: cover; }
+        
+        .item-info { padding: 15px; text-align: center; }
+        .item-price { color: var(--secondary); font-weight: 800; font-size: 1.2em; display: block; margin: 10px 0; }
+        
+        .btn-add { 
+            background: var(--dark); 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 50px;
+            cursor: pointer; 
+            width: 100%;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .btn-add.selected { background: var(--secondary); }
+
+        /* --- FORM CONTAINER --- */
+        #form-container {
+            display: none;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        /* --- GIỎ HÀNG FLOATING --- */
+        .cart-float { 
+            position: fixed; 
+            bottom: 20px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            z-index: 1001;
+        }
+        
+        #btn-checkout { 
+            background: #000; 
+            color: #fff; 
+            padding: 18px; 
+            border-radius: 50px; 
+            border: none; 
+            width: 100%;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="#" class="logo">🧋 XUÂN QUANG TEA</a>
+        <nav>
+            <a href="#tra-sua">Trà Sữa</a>
+            <a href="#tra-trai-cay">Trà Trái Cây</a>
+        </nav>
+    </div>
+</header>
+
+<div class="hero">
+    <h1>MENU SINH VIÊN SIÊU RẺ ✌️</h1>
+    <p>DNU_CNTT_18-9 - Giao nhanh trong 15 phút</p>
+</div>
+
+<div class="container">
+    <div id="tra-sua" class="section-title">Trà Sữa Đậm Vị</div>
+    <div class="menu-grid" id="list-tra-sua"></div>
+
+    <div id="tra-trai-cay" class="section-title">Trà Chanh & Trái Cây</div>
+    <div class="menu-grid" id="list-tra-trai-cay"></div>
+</div>
+
+<div id="form-container">
+    <h2 style="color: var(--secondary)">Hoàn Tất Đơn Hàng</h2>
+    <p>Vui lòng kiểm tra lại danh sách món và điền thông tin giao hàng.</p>
+    <iframe id="google-form" src="" width="100%" height="700" frameborder="0" marginheight="0" marginwidth="0">Đang tải…</iframe>
+    <button onclick="document.getElementById('form-container').style.display='none'" style="margin-top:20px; padding:10px 30px; border-radius:50px; border:none; background:#ff4757; color:white; cursor:pointer; font-weight:bold;">Hủy đơn hàng</button>
+</div>
+
+<div class="cart-float">
+    <button id="btn-checkout" onclick="checkout()">Xem đơn hàng (0 món)</button>
+</div>
+
+<script>
+    const data = {
+        traSua: [
+            { name: "Trà Sữa Truyền Thống", price: "20.000đ", img: "chanchau.jpg" },
+            { name: "Trà Sữa Thái Xanh", price: "22.000đ", img: "Trathaixanh.jpg" },
+            { name: "Sữa Tươi Trân Châu Đường Đen", price: "25.000đ", img: "https://images.unsplash.com/photo-1553881781-4c55163dc5fd?w=400" }
+        ],
+        traTraiCay: [
+            { name: "Trà Chanh Giã Tay", price: "15.000đ", img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400" },
+            { name: "Trà Đào Miếng", price: "20.000đ", img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400" },
+            { name: "Trà Dâu Đông Du", price: "20.000đ", img: "tradau.jpg" }
+        ]
+    };
+
+    let cart = [];
+
+    function render() {
+        const renderSection = (items, elementId) => {
+            document.getElementById(elementId).innerHTML = items.map(item => `
+                <div class="item-card">
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="item-info">
+                        <h3>${item.name}</h3>
+                        <span class="item-price">${item.price}</span>
+                        <button class="btn-add" onclick="addToCart('${item.name}', this)">Chọn ngay</button>
+                    </div>
+                </div>
+            `).join('');
+        };
+        renderSection(data.traSua, 'list-tra-sua');
+        renderSection(data.traTraiCay, 'list-tra-trai-cay');
+    }
+
+    function addToCart(name, btn) {
+        const index = cart.indexOf(name);
+        if (index > -1) {
+            cart.splice(index, 1);
+            btn.innerText = "Chọn ngay";
+            btn.classList.remove('selected');
+        } else {
+            cart.push(name);
+            btn.innerText = "Đã chọn ✓";
+            btn.classList.add('selected');
+        }
+        document.getElementById('btn-checkout').innerText = `Xem đơn hàng (${cart.length} món)`;
+    }
+
+    function checkout() {
+        if (cart.length === 0) return alert("Bạn chưa chọn món nào cả!");
+        
+        // --- THAY ĐỔI THÔNG TIN TẠI ĐÂY ---
+        const baseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSet7glaAHgUxSpnQ1R7O50jPTaEeMNk2yGkdrWHQH2wCKlBzA/viewform?usp=publish-editor://docs.google.com/forms/d/e/1FAIpQLScivQPwO4UDxTtVce5gq02ZLdbEqRu0sVechu0bYrchLOSZew/viewform?usp=publish-editor://docs.google.com/forms/d/e/1FAIpQLSfIElAp9yZumGJLgwseQxtTaSqoF2Hr-RPP4U1wgcRVlYqb7g/viewform?usp=publish-editor";
+        const entryID = "entry.123456789"; // Thay số này bằng ID câu hỏi của bạn
+        
+        const listItems = cart.join(", ");
+        const finalUrl = `${baseUrl}?embedded=true&${entryID}=${encodeURIComponent(listItems)}`;
+        
+        // Hiển thị Form ngay trên trang
+        const formIframe = document.getElementById('google-form');
+        const formBox = document.getElementById('form-container');
+        
+        formIframe.src = finalUrl;
+        formBox.style.display = 'block';
+        
+        // Cuộn xuống phần Form
+        formBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    render();
+</script>
+
+</body>
+</html>
